@@ -1,0 +1,4 @@
+include README.md
+recursive-include octoprint_WaveshareUPS/templates *
+recursive-include octoprint_WaveshareUPS/translations *
+recursive-include octoprint_WaveshareUPS/static *
