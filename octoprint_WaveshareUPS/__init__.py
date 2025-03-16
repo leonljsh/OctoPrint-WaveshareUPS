@@ -6,8 +6,7 @@ import time
 class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
                          octoprint.plugin.TemplatePlugin,
                          octoprint.plugin.AssetPlugin,
-                         octoprint.plugin.SimpleApiPlugin,
-                         octoprint.plugin.UpdatePlugin):
+                         octoprint.plugin.SimpleApiPlugin):
 
     def __init__(self):
         self._bus = SMBus(1)
