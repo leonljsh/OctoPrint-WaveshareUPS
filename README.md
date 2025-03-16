@@ -17,3 +17,12 @@ None. Make sure the device you are using has the Waveshare UPS Hat installed.
 ## Sources
 
 - https://www.waveshare.com/wiki/UPS_HAT
+
+## Roadmap
+### V0.1
+- ensure basic functionality
+  
+### V0.2
+- add settings page to set thresholds
+- add threshold and command to execute (e.g., aborting the print job and shutting down the raspberry pi when power loss is imminent)
+- (optional) add graphical settings (choice of symbol and colors)
