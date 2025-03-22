@@ -22,6 +22,9 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
         threading.Thread(target=self._update_ups_status).start()
 
     def _update_ups_status(self):
+        # Log the message content
+        self._logger.info("Starting UPS status update thread")
+
         ina219 = INA219(addr=self._address)
         while not self._stop_thread:
             try:
@@ -46,6 +49,13 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
                 # Send notification if battery is below critical threshold
                 if self._power_supply_status == "Battery" and self._battery_percentage <= self._critical_threshold:
                     self._send_critical_notification()
+
+                # Log the message content
+                self._logger.info("Sending plugin message: battery_percentage={}, power_supply_status={}, remaining_runtime={}".format(
+                    self._battery_percentage,
+                    self._power_supply_status,
+                    self._remaining_runtime
+                ))
 
                 # Update the UI
                 self._plugin_manager.send_plugin_message(self._identifier, dict(
