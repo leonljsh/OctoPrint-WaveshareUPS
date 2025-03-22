@@ -89,7 +89,7 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
         return [dict(type="navbar", custom_bindings=False, template="waveshareups_navbar.jinja2")]
 
     def get_assets(self):
-        return dict(js=["js/WaveShareUPS.js", "css/WaveShareUPS.css"])
+        return dict(js=["js/WaveshareUPS.js", "css/WaveshareUPS.css"])
 
     def on_api_get(self, request):
         return flask.jsonify(
