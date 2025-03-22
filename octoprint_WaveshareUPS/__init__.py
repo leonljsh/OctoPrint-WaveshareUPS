@@ -86,7 +86,7 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
         }
 
     def get_template_configs(self):
-        return [dict(type="navbar", custom_bindings=False)]
+        return [dict(type="navbar", custom_bindings=False, template="waveshareups_navbar.jinja2")]
 
     def get_assets(self):
         return dict(js=["js/waveshareups.js", "css/waveshareups.css"])
