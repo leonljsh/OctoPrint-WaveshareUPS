@@ -54,7 +54,7 @@ $(function() {
                                  "Current: " + self.current() + " mA\n" +
                                  "Power: " + self.power() + " W";
 
-            $("#navbar_plugin_waveshareups").attr("title", tooltipContent).tooltip('fixTitle');
+            $("#navbar_plugin_waveshareups span").attr("title", tooltipContent).tooltip('fixTitle');
         };
 
     }
