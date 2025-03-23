@@ -11,12 +11,12 @@ or manually using this URL:
 
     https://github.com/michaelszubartowicz/OctoPrint-WaveshareUPS/archive/main.zip
 
+Make sure the device you are using has the Waveshare UPS Hat installed and have enable the I2C interface (cf. https://www.waveshare.com/wiki/UPS_HAT).
+<img src="assets/img/featured.jpeg" width="400"/>
 
 ## Configuration
 
-None. Make sure the device you are using has the Waveshare UPS Hat installed.
-
-<img src="assets/img/featured.jpeg" width="400"/>
+None at the moment. See Roadmap for planned features.
 
 ## Sources
 
