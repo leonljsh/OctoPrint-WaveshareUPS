@@ -48,7 +48,10 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
                     self._battery_percentage = 0
 
                 # Determine power supply status
-                self._power_supply_status = "Battery" if self._load_voltage < 12 else "Power Supply"
+                if self._current > 0:  # Positive current indicates charging
+                    self._power_supply_status = "Power Supply"
+                else:  # Negative current indicates discharging
+                    self._power_supply_status = "Battery"
 
                 # Estimate remaining runtime (this is a placeholder, adjust as needed)
                 self._remaining_runtime = (self._battery_percentage / 100) * 120  # Assume 120 minutes at full charge
