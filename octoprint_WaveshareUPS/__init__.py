@@ -25,7 +25,7 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
 
     def on_after_startup(self):
         self._logger.info("Waveshare UPS Plugin started")
-        threading.Thread(target=self._update_ups_status).start()
+        threading.Thread(target=self._update_ups_status,daemon=True).start()
 
     def _update_ups_status(self):
         # Log the message content

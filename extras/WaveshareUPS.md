@@ -8,8 +8,7 @@ authors:
 - Michael Szubartowicz
 license: MIT
 
-# TODO
-date: 2025-03-16
+date: 2025-03-23
 
 homepage: https://github.com/michaelszubartowicz/OctoPrint-WaveshareUPS
 source: https://github.com/michaelszubartowicz/OctoPrint-WaveshareUPS
@@ -50,7 +49,6 @@ compatibility:
 
   python: ">=3,<4"
 
-# TODO
 # If any of the below attributes apply to your project, uncomment the corresponding lines. This is MANDATORY!
 
 attributes:
@@ -65,6 +63,7 @@ An OctoPrint plugin to support the Waveshare UPS HAT, providing real-time monito
 ### Configuration
 1. Install the plugin via the OctoPrint plugin manager.
 2. Connect the Waveshare UPS HAT to your Raspberry Pi.
+3. Ensure the I2C Interface is enabled (see also https://www.waveshare.com/wiki/UPS_HAT)
 
 ### Features
 - Real-time battery status monitoring
