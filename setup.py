@@ -33,7 +33,7 @@ plugin_url = "https://github.com/michaelszubartowicz/OctoPrint-WaveshareUPS"
 plugin_license = "MIT"
 
 # Any additional requirements besides OctoPrint should be listed here
-plugin_requires = ["smbus2"]
+plugin_requires = ["smbus"]
 
 ### --------------------------------------------------------------------------------------------------------------------
 ### More advanced options that you usually shouldn't have to touch follow after this point

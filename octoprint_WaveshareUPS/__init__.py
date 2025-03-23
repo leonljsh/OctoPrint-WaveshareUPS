@@ -1,5 +1,5 @@
 import octoprint.plugin
-from smbus2 import SMBus  # Updated to use smbus2
+from .external.INA219 import INA219  # Import the INA219 class from the external directory
 import threading
 import time
 
@@ -9,7 +9,6 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
                          octoprint.plugin.SimpleApiPlugin):
 
     def __init__(self):
-        self._bus = SMBus(1)
         self._address = 0x42  # Address of the INA219 sensor
         self._battery_percentage = 0
         self._power_supply_status = "Unknown"
