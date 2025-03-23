@@ -57,6 +57,12 @@ $(function() {
             $("#navbar_plugin_waveshareups span").attr("title", tooltipContent).tooltip('fixTitle');
         };
 
+        // Initialize tooltips
+        self.onStartupComplete = function() {
+            $('#navbar_plugin_waveshareups span').tooltip({
+                placement: 'bottom'
+            });
+        };
     }
 
     OCTOPRINT_VIEWMODELS.push({

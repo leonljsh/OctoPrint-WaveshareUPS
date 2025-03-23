@@ -110,7 +110,7 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
         )
 
     def on_api_get(self, request):
-        return flask.jsonify(
+        return flask.jsonify(  # type: ignore
             battery_percentage=self._battery_percentage,
             power_supply_status=self._power_supply_status,
             remaining_runtime=self._remaining_runtime,
