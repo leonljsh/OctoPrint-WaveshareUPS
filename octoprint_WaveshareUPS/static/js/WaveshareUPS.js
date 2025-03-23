@@ -45,14 +45,14 @@ $(function() {
             $("#navbar_plugin_waveshareups i").attr("class", iconClass);
 
             // Update tooltip
-            var tooltipContent = "Battery: " + self.battery_percentage() + "%\n" +
+            var tooltipContent = "Battery: {:3.1f}%\n".format(self.battery_percentage()) +
                                  "Status: " + self.power_supply_status() + "\n" +
-                                 "Runtime: " + self.remaining_runtime() + " mins\n" +
-                                 "PSU Voltage: " + self.psu_voltage() + " V\n" +
-                                 "Shunt Voltage: " + self.shunt_voltage() + " mV\n" +
-                                 "Load Voltage: " + self.load_voltage() + " V\n" +
-                                 "Current: " + self.current() + " mA\n" +
-                                 "Power: " + self.power() + " W";
+                                 "Runtime: {:3.1f}mins\n".format(self.remaining_runtime()) +
+                                 "PSU Voltage: {:6.3f} V\n".format(self.psu_voltage()) +
+                                 "Shunt Voltage: {:6.3f} mV\n".format(self.shunt_voltage()) +
+                                 "Load Voltage: {:6.3f} V\n".format(self.load_voltage()) +
+                                 "Current: {:6.3f} mA\n".format(self.current()) +
+                                 "Power: {:6.3f} W".format(self.power());
 
             $("#navbar_plugin_waveshareups span").attr("title", tooltipContent).tooltip('fixTitle');
         };
