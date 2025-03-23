@@ -1,5 +1,6 @@
 #navbar_plugin_waveshareups i {
-    font-size: xx-large;
+    font-size: x-large;
     color: #fff;
-    padding: 0px 5px;
+    padding: 0px 10px;
+    vertical-align: middle;
 }
