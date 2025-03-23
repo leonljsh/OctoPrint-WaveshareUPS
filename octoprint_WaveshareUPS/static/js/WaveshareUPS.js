@@ -44,15 +44,15 @@ $(function() {
 
             $("#navbar_plugin_waveshareups i").attr("class", iconClass);
 
-            // Update tooltip
-            var tooltipContent = "Battery: {:3.1f}%\n".format(self.battery_percentage()) +
+            // Update tooltip with formatted numbers
+            var tooltipContent = "Battery: " + self.battery_percentage().toFixed(1) + "%\n" +
                                  "Status: " + self.power_supply_status() + "\n" +
-                                 "Runtime: {:3.1f}mins\n".format(self.remaining_runtime()) +
-                                 "PSU Voltage: {:6.3f} V\n".format(self.psu_voltage()) +
-                                 "Shunt Voltage: {:6.3f} mV\n".format(self.shunt_voltage()) +
-                                 "Load Voltage: {:6.3f} V\n".format(self.load_voltage()) +
-                                 "Current: {:6.3f} mA\n".format(self.current()) +
-                                 "Power: {:6.3f} W".format(self.power());
+                                 "Runtime: " + self.remaining_runtime().toFixed(1) + " mins\n" +
+                                 "PSU Voltage: " + self.psu_voltage().toFixed(3) + " V\n" +
+                                 "Shunt Voltage: " + self.shunt_voltage().toFixed(3) + " mV\n" +
+                                 "Load Voltage: " + self.load_voltage().toFixed(3) + " V\n" +
+                                 "Current: " + self.current().toFixed(3) + " mA\n" +
+                                 "Power: " + self.power().toFixed(3) + " W";
 
             $("#navbar_plugin_waveshareups span").attr("title", tooltipContent).tooltip('fixTitle');
         };
