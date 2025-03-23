@@ -15,6 +15,13 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
         self._remaining_runtime = 0
         self._critical_threshold = 10  # Critical battery percentage threshold
         self._stop_thread = False
+        
+        # Initialize values for additional metrics
+        self._psu_voltage = 0
+        self._shunt_voltage = 0
+        self._load_voltage = 0
+        self._current = 0
+        self._power = 0
 
     def on_after_startup(self):
         self._logger.info("Waveshare UPS Plugin started")
@@ -27,20 +34,21 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
         ina219 = INA219(addr=self._address)
         while not self._stop_thread:
             try:
-                bus_voltage = ina219.getBusVoltage_V()  # Voltage on V- (load side)
-                shunt_voltage = ina219.getShuntVoltage_mV() / 1000  # Voltage between V+ and V- across the shunt
-                current = ina219.getCurrent_mA()  # Current in mA
-                power = ina219.getPower_W()  # Power in W
+                self._load_voltage = ina219.getBusVoltage_V()  # Voltage on V- (load side)
+                self._shunt_voltage = ina219.getShuntVoltage_mV() / 1000  # Voltage between V+ and V- across the shunt
+                self._psu_voltage = self._load_voltage + self._shunt_voltage
+                self._current = ina219.getCurrent_mA()  # Current in mA
+                self._power = ina219.getPower_W()  # Power in W
 
                 # Calculate battery percentage
-                self._battery_percentage = (bus_voltage - 6) / 2.4 * 100
+                self._battery_percentage = (self._load_voltage - 6) / 2.4 * 100
                 if self._battery_percentage > 100:
                     self._battery_percentage = 100
                 if self._battery_percentage < 0:
                     self._battery_percentage = 0
 
                 # Determine power supply status
-                self._power_supply_status = "Battery" if bus_voltage < 12 else "Power Supply"
+                self._power_supply_status = "Battery" if self._load_voltage < 12 else "Power Supply"
 
                 # Estimate remaining runtime (this is a placeholder, adjust as needed)
                 self._remaining_runtime = (self._battery_percentage / 100) * 120  # Assume 120 minutes at full charge
@@ -49,18 +57,16 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
                 if self._power_supply_status == "Battery" and self._battery_percentage <= self._critical_threshold:
                     self._send_critical_notification()
 
-                # Log the message content
-                self._logger.info("Sending plugin message: battery_percentage={}, power_supply_status={}, remaining_runtime={}".format(
-                    self._battery_percentage,
-                    self._power_supply_status,
-                    self._remaining_runtime
-                ))
-
                 # Update the UI
                 self._plugin_manager.send_plugin_message(self._identifier, dict(
                     battery_percentage=self._battery_percentage,
                     power_supply_status=self._power_supply_status,
-                    remaining_runtime=self._remaining_runtime
+                    remaining_runtime=self._remaining_runtime,
+                    psu_voltage=self._psu_voltage,
+                    shunt_voltage=self._shunt_voltage,
+                    load_voltage=self._load_voltage,
+                    current=self._current,
+                    power=self._power
                 ))
 
                 time.sleep(10)
@@ -107,7 +113,12 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
         return flask.jsonify(
             battery_percentage=self._battery_percentage,
             power_supply_status=self._power_supply_status,
-            remaining_runtime=self._remaining_runtime
+            remaining_runtime=self._remaining_runtime,
+            psu_voltage=self._psu_voltage,
+            shunt_voltage=self._shunt_voltage,
+            load_voltage=self._load_voltage,
+            current=self._current,
+            power=self._power
         )
 
     def on_shutdown(self):
