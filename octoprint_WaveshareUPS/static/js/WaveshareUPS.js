@@ -44,23 +44,24 @@ $(function() {
 
             $("#navbar_plugin_waveshareups i").attr("class", iconClass);
 
-            // Update tooltip with formatted numbers
-            var tooltipContent = "Battery: " + self.battery_percentage().toFixed(1) + "%\n" +
-                                 "Status: " + self.power_supply_status() + "\n" +
-                                 "Runtime: " + self.remaining_runtime().toFixed(1) + " mins\n" +
-                                 "PSU Voltage: " + self.psu_voltage().toFixed(3) + " V\n" +
-                                 "Shunt Voltage: " + self.shunt_voltage().toFixed(3) + " mV\n" +
-                                 "Load Voltage: " + self.load_voltage().toFixed(3) + " V\n" +
-                                 "Current: " + self.current().toFixed(3) + " mA\n" +
+            // Update tooltip with formatted numbers and HTML line breaks
+            var tooltipContent = "Battery: " + self.battery_percentage().toFixed(1) + "%<br>" +
+                                 "Status: " + self.power_supply_status() + "<br>" +
+                                 "Runtime: " + self.remaining_runtime().toFixed(1) + " mins<br>" +
+                                 "PSU Voltage: " + self.psu_voltage().toFixed(3) + " V<br>" +
+                                 "Shunt Voltage: " + self.shunt_voltage().toFixed(3) + " mV<br>" +
+                                 "Load Voltage: " + self.load_voltage().toFixed(3) + " V<br>" +
+                                 "Current: " + self.current().toFixed(3) + " mA<br>" +
                                  "Power: " + self.power().toFixed(3) + " W";
 
-            $("#navbar_plugin_waveshareups span").attr("title", tooltipContent).tooltip('fixTitle');
+            $("#navbar_plugin_waveshareups span").attr("title", tooltipContent).tooltip('fixTitle').tooltip({html: true});
         };
 
         // Initialize tooltips
         self.onStartupComplete = function() {
             $('#navbar_plugin_waveshareups span').tooltip({
-                placement: 'bottom'
+                placement: 'bottom',
+                html: true
             });
         };
     }
