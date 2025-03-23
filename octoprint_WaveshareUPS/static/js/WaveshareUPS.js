@@ -11,6 +11,13 @@ $(function() {
         self.current = ko.observable();
         self.power = ko.observable();
 
+        // Helper function to format runtime
+        self.formatRuntime = function(minutes) {
+            var hrs = Math.floor(minutes / 60);
+            var mins = minutes % 60;
+            return hrs + "h " + mins.toFixed(0) + "m";
+        };
+
         self.onDataUpdaterPluginMessage = function(plugin, data) {
             if (plugin !== "waveshareups") {
                 return;
@@ -47,7 +54,7 @@ $(function() {
             // Update tooltip with formatted numbers and HTML line breaks
             var tooltipContent = "Battery: " + self.battery_percentage().toFixed(1) + "%<br>" +
                                  "Status: " + self.power_supply_status() + "<br>" +
-                                 "Runtime: " + self.remaining_runtime().toFixed(1) + " mins<br>" +
+                                 "Runtime: " + self.formatRuntime(self.remaining_runtime()) + "<br>" +
                                  "PSU Voltage: " + self.psu_voltage().toFixed(3) + " V<br>" +
                                  "Shunt Voltage: " + self.shunt_voltage().toFixed(3) + " mV<br>" +
                                  "Load Voltage: " + self.load_voltage().toFixed(3) + " V<br>" +
