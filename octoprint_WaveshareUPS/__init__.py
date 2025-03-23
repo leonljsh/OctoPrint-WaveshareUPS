@@ -133,6 +133,4 @@ def __plugin_load__():
         "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information
     }
 
-__plugin_name__ = "Waveshare UPS Plugin"
 __plugin_pythoncompat__ = ">=3,<4"
-__plugin_version__ = "0.1.0"
