@@ -1,15 +1,15 @@
 # OctoPrint-WaveshareUPS
 
+Works for UPS HAT (D)
 This plugin displays a battery or power plug icon in the navigation bar. Hovering over the icon will show the current battery percentage, power supply status, and the remaining estimated runtime.
 
 ![image](assets/img/Screenshot_1.png)
 ![image](assets/img/Screenshot_2.png)
 ## Setup
 
-Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bundledplugins/pluginmanager.html)
-or manually using this URL:
+Install manually using this URL:
 
-    https://github.com/michaelszubartowicz/OctoPrint-WaveshareUPS/archive/main.zip
+    https://github.com/leonljsh/OctoPrint-WaveshareUPS/archive/main.zip
 
 Make sure the device you are using has the Waveshare UPS Hat installed and have enable the I2C interface (cf. https://www.waveshare.com/wiki/UPS_HAT).
 <img src="assets/img/featured.jpeg" width="400"/>
