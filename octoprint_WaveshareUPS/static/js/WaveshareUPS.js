@@ -2,80 +2,116 @@ $(function() {
     function WaveshareUPSViewModel(parameters) {
         var self = this;
 
-        self.battery_percentage = ko.observable();
-        self.power_supply_status = ko.observable();
-        self.remaining_runtime = ko.observable();
-        self.psu_voltage = ko.observable();
-        self.shunt_voltage = ko.observable();
-        self.load_voltage = ko.observable();
-        self.current = ko.observable();
-        self.power = ko.observable();
+        // Observable data
+        self.battery_percentage = ko.observable(0);
+        self.power_supply_status = ko.observable('Unknown');
+        self.load_voltage = ko.observable(0);
+        self.psu_voltage = ko.observable(0);
+        self.shunt_voltage = ko.observable(0);
+        self.current = ko.observable(0);
+        self.power = ko.observable(0);
+        self.remaining_runtime = ko.observable(0);
 
-        // Helper function to format runtime
-        self.formatRuntime = function(minutes) {
-            var hrs = Math.floor(minutes / 60);
-            var mins = minutes % 60;
-            return hrs + "h " + mins.toFixed(0) + "m";
-        };
+        // Computed values
+        self.iconClass = ko.pureComputed(function () {
+            if (self.power_supply_status() === "Battery") {
+                var pct = self.battery_percentage();
+                if (pct > 75) return "fas fa-battery-full";
+                if (pct > 50) return "fas fa-battery-three-quarters";
+                if (pct > 25) return "fas fa-battery-half";
+                if (pct > 10) return "fas fa-battery-quarter";
+                return "fas fa-battery-empty text-error";
+            }
+            return "fas fa-plug text-success";
+        });
+
+        self.batteryColor = ko.pureComputed(function() {
+            var pct = self.battery_percentage();
+            if (pct <= 10) return '#d9534f';
+            if (pct <= 30) return '#f0ad4e';
+            return '#5cb85c';
+        });
+
+        self.formattedBattery = ko.pureComputed(function() {
+            return Math.round(self.battery_percentage()) + '%';
+        });
+
+        self.formattedTooltip = ko.pureComputed(function() {
+            return `
+                <div class="ups-tooltip">
+                    <div class="ups-tooltip-row">
+                        <span class="ups-tooltip-label">Battery:</span>
+                        <span class="ups-tooltip-value">${self.formattedBattery()}</span>
+                    </div>
+                    <div class="ups-tooltip-row">
+                        <span class="ups-tooltip-label">Status:</span>
+                        <span class="ups-tooltip-value">${self.power_supply_status()}</span>
+                    </div>
+                    <div class="ups-tooltip-row">
+                        <span class="ups-tooltip-label">Voltage:</span>
+                        <span class="ups-tooltip-value">${self.load_voltage().toFixed(2)} V</span>
+                    </div>
+                    <div class="ups-tooltip-row">
+                        <span class="ups-tooltip-label">Current:</span>
+                        <span class="ups-tooltip-value">${Math.abs(self.current()).toFixed(1)} mA ${self.current() > 0 ? '↑' : '↓'}</span>
+                    </div>
+                    <div class="ups-tooltip-row">
+                        <span class="ups-tooltip-label">Power:</span>
+                        <span class="ups-tooltip-value">${self.power().toFixed(2)} W</span>
+                    </div>
+                    <div class="ups-tooltip-row">
+                        <span class="ups-tooltip-label">PSU:</span>
+                        <span class="ups-tooltip-value">${self.psu_voltage().toFixed(2)} V</span>
+                    </div>
+                    <div class="ups-tooltip-row">
+                        <span class="ups-tooltip-label">Shunt:</span>
+                        <span class="ups-tooltip-value">${self.shunt_voltage().toFixed(3)} V</span>
+                    </div>
+                    <div class="ups-tooltip-row">
+                        <span class="ups-tooltip-label">Runtime:</span>
+                        <span class="ups-tooltip-value">${Math.round(self.remaining_runtime())} min</span>
+                    </div>
+                </div>
+            `;
+        });
 
         self.onDataUpdaterPluginMessage = function(plugin, data) {
-            if (plugin !== "waveshareups") {
-                return;
-            }
+            if (plugin !== "waveshareups") return;
 
-            self.battery_percentage(data.battery_percentage);
-            self.power_supply_status(data.power_supply_status);
-            self.remaining_runtime(data.remaining_runtime);
-            self.psu_voltage(data.psu_voltage);
-            self.shunt_voltage(data.shunt_voltage);
-            self.load_voltage(data.load_voltage);
-            self.current(data.current);
-            self.power(data.power);
+            if (data.battery_percentage !== undefined)
+                self.battery_percentage(data.battery_percentage);
+            if (data.power_supply_status !== undefined)
+                self.power_supply_status(data.power_supply_status);
+            if (data.load_voltage !== undefined)
+                self.load_voltage(data.load_voltage);
+            if (data.current !== undefined)
+                self.current(data.current);
+            if (data.power !== undefined)
+                self.power(data.power);
+            if (data.psu_voltage !== undefined)
+                self.psu_voltage(data.psu_voltage);
+            if (data.shunt_voltage !== undefined)
+                self.shunt_voltage(data.shunt_voltage);
+            if (data.remaining_runtime !== undefined)
+                self.remaining_runtime(data.remaining_runtime);
 
-            var iconClass;
-            if (self.power_supply_status() === "Battery") {
-                if (self.battery_percentage() > 75) {
-                    iconClass = "fas fa-battery-full";
-                } else if (self.battery_percentage() > 50) {
-                    iconClass = "fas fa-battery-three-quarters";
-                } else if (self.battery_percentage() > 25) {
-                    iconClass = "fas fa-battery-half";
-                } else if (self.battery_percentage() > 10) {
-                    iconClass = "fas fa-battery-quarter";
-                } else {
-                    iconClass = "fas fa-battery-empty";
-                }
-            } else {
-                iconClass = "fas fa-plug";
-            }
-
-            $("#navbar_plugin_waveshareups i").attr("class", iconClass);
-
-            // Update tooltip with formatted numbers and HTML line breaks
-            var tooltipContent = "Battery: " + self.battery_percentage().toFixed(1) + "%<br>" +
-                                 "Status: " + self.power_supply_status() + "<br>" +
-                                 "Runtime: " + self.formatRuntime(self.remaining_runtime()) + "<br>" +
-                                 "PSU Voltage: " + self.psu_voltage().toFixed(3) + " V<br>" +
-                                 "Shunt Voltage: " + self.shunt_voltage().toFixed(3) + " mV<br>" +
-                                 "Load Voltage: " + self.load_voltage().toFixed(3) + " V<br>" +
-                                 "Current: " + self.current().toFixed(3) + " mA<br>" +
-                                 "Power: " + self.power().toFixed(3) + " W";
-
-            $("#navbar_plugin_waveshareups span").attr("title", tooltipContent).tooltip('fixTitle').tooltip({html: true});
+            $('.waveshare-ups-widget')
+                .attr('data-original-title', self.formattedTooltip())
+                .tooltip('fixTitle');
         };
 
-        // Initialize tooltips
         self.onStartupComplete = function() {
-            $('#navbar_plugin_waveshareups span').tooltip({
+            $('.waveshare-ups-widget').tooltip({
+                html: true,
                 placement: 'bottom',
-                html: true
+                trigger: 'hover'
             });
         };
     }
 
     OCTOPRINT_VIEWMODELS.push({
         construct: WaveshareUPSViewModel,
-        dependencies: [],
-        elements: ["#navbar_plugin_waveshareups"]
+        dependencies: ["loginStateViewModel"],
+        elements: [".waveshare-ups-container"]
     });
 });

@@ -9,7 +9,7 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
                          octoprint.plugin.SimpleApiPlugin):
 
     def __init__(self):
-        self._address = 0x42  # Address of the INA219 sensor
+        self._address = 0x43  # Address of the INA219 sensor
         self._battery_percentage = 0
         self._power_supply_status = "Unknown"
         self._remaining_runtime = 0
@@ -31,17 +31,17 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
         # Log the message content
         self._logger.info("Starting UPS status update thread")
 
-        ina219 = INA219(addr=self._address)
+        ina219 = INA219(i2c_bus=1, addr=self._address)
         while not self._stop_thread:
             try:
                 self._load_voltage = ina219.getBusVoltage_V()  # Voltage on V- (load side)
                 self._shunt_voltage = ina219.getShuntVoltage_mV() / 1000  # Voltage between V+ and V- across the shunt
                 self._psu_voltage = self._load_voltage + self._shunt_voltage
-                self._current = ina219.getCurrent_mA()  # Current in mA
+                self._current = -ina219.getCurrent_mA()  # Current in mA
                 self._power = ina219.getPower_W()  # Power in W
 
                 # Calculate battery percentage
-                self._battery_percentage = (self._load_voltage - 6) / 2.4 * 100
+                self._battery_percentage = (self._load_voltage - 3) / 1.2 * 100
                 if self._battery_percentage > 100:
                     self._battery_percentage = 100
                 if self._battery_percentage < 0:
@@ -104,7 +104,7 @@ class WaveshareUPSPlugin(octoprint.plugin.StartupPlugin,
         }
 
     def get_template_configs(self):
-        return [dict(type="navbar", custom_bindings=False, template="waveshareups_navbar.jinja2")]
+        return [dict(type="navbar", custom_bindings=True, template="waveshareups_navbar.jinja2")]
 
     def get_assets(self):
         return dict(

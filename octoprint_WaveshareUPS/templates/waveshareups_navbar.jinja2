@@ -1,3 +1,6 @@
-<span class="navbar-text" data-toggle="tooltip" title="">
-    <i class="fas fa-battery-half"></i>
-</span>
+<li class="waveshare-ups-container">
+    <span class="waveshare-ups-widget" data-bind="attr: {'data-original-title': formattedTooltip}">
+        <i class="fas fa-battery-half" data-bind="css: iconClass"></i>
+        <span class="badge" data-bind="text: formattedBattery, style: { 'background-color': batteryColor }"></span>
+    </span>
+</li>

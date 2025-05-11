@@ -1,6 +1,50 @@
-#navbar_plugin_waveshareups i {
-    font-size: x-large;
-    color: #333;
-    padding: 0px 10px;
-    vertical-align: middle;
+.waveshare-ups-container {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.waveshare-ups-widget {
+    cursor: pointer;
+    padding: 10px 5px;
+    display: inline-block;
+}
+
+.waveshare-ups-widget .badge {
+    margin-left: 5px;
+    font-size: 10px;
+    padding: 2px 5px;
+}
+
+/* Tooltip content styling */
+.ups-tooltip {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    min-width: 150px;
+}
+
+.ups-tooltip-row {
+    display: flex;
+    margin-bottom: 3px;
+}
+
+.ups-tooltip-label {
+    font-weight: bold;
+    width: 60px;
+    text-align: right;
+    padding-right: 8px;
+    color: #666;
+}
+
+.ups-tooltip-value {
+    flex: 1;
+    text-align: left;
+}
+
+.fa-battery-empty.text-error {
+    color: #d9534f;
+}
+
+.fa-plug.text-success {
+    color: #5cb85c;
 }
